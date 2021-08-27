@@ -1,8 +1,21 @@
 import React from 'react';
-import PageLeagues from './pageLeagues/pageLeagues'
+import PageLeagues from './components/pageLeagues/pageLeagues'
+import PageLeague from "./components/pageLeague/pageLeague";
+import {BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
+import {Provider} from "react-redux";
+import {store} from "./store";
+
 const App:React.FC = () => {
   return(
-      <PageLeagues/>
+      <Provider store={store}>
+          <BrowserRouter>
+              <Switch>
+                  <Route exact path={"/"} component={PageLeagues}/>
+                  <Route path={"/league"} component={PageLeague}/>
+                  <Redirect to={"/"}/>
+              </Switch>
+          </BrowserRouter>
+      </Provider>
   )
 }
 

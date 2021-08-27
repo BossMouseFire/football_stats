@@ -1,0 +1,29 @@
+.league{
+  display: flex;
+  flex-direction: column;
+  .navbar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: #226A00;
+    width: 100vw;
+    height: 6vw;
+    color: white;
+    img{
+      width: 3vw;
+    }
+    span{
+      margin-left: 0.5vw;
+      font-size: 3vw;
+    }
+  }
+  .mainPart{
+    width: 70vw;
+    height: 10vw;
+    margin: auto;
+    .descriptionLeague{
+
+    }
+  }
+}
