@@ -70,6 +70,7 @@ interface TeamTable {
     won: number,
     draw: number,
     lost: number,
+    goalDifference: number,
     points: number,
 }
 

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import './pageLeague.scss'
 import ball from './soccer-ball.svg'
 import {useDispatch} from "react-redux";
@@ -15,7 +15,7 @@ const PageLeague:React.FC = () => {
     const {matches} = useTypeSelector(state => state.matches)
     const {teams} = useTypeSelector(state => state.teams)
     const {standings} = useTypeSelector(state => state.standings)
-
+    const [isStandings, setStandings] = useState<boolean>(true)
     useEffect(() => {
         const param:string | null = getParams("id");
         let id: number = Number(param)
@@ -38,6 +38,9 @@ const PageLeague:React.FC = () => {
         return null;
     }
 
+    const changeTeamTable = (state: boolean) => {
+        setStandings(state)
+    }
     return(
         <div className={"league"}>
             <div className={"navbar"}>
@@ -73,24 +76,61 @@ const PageLeague:React.FC = () => {
                     </div>
                 </div>
                 <div className={"actionsLeague"}>
-                    <div className={"teamsList"}>
+                    <div className={"teamsListBlock"}>
                         <div className={"buttonsActionTeam"}>
-                            <button>Турнирная таблица</button>
-                            <button>Список команд</button>
+                            <button onClick={() => changeTeamTable(true)}>Турнирная таблица</button>
+                            <button onClick={() => changeTeamTable(false)}>Список команд</button>
                         </div>
-                        <div className={"teams"}>
-                            {teams.map(team =>
-                                <div className={"team"} key={team.id}>
-                                    <img src={team.crestUrl}/>
-                                    <span>
-                                        <a href={"/"}>{team.name}</a>
-                                    </span>
+                        {
+                            isStandings ?
+                                <div className="tableStandings">
+                                    <table>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Команда</th>
+                                            <th>С</th>
+                                            <th>В</th>
+                                            <th>Н</th>
+                                            <th>П</th>
+                                            <th>РГ</th>
+                                            <th>Очки</th>
+                                        </tr>
+                                        {standings.map(team =>
+                                            <tr key={team.team.id}>
+                                                <td className={"position"}>{team.position}</td>
+                                                <td>
+                                                    <div>
+                                                        <img src={team.team.crestUrl}/>
+                                                        <span>
+                                                    <a href={"/"}>{team.team.name}</a>
+                                                </span>
+                                                    </div>
+                                                </td>
+                                                <td>{team.playedGames}</td>
+                                                <td>{team.won}</td>
+                                                <td>{team.draw}</td>
+                                                <td>{team.lost}</td>
+                                                <td>{team.goalDifference}</td>
+                                                <td>{team.points}</td>
+                                            </tr>
+                                        )}
+                                    </table>
                                 </div>
-                            )}
-                        </div>
+                                :
+                                <div className={"allTeams"}>
+                                    {teams.map(team =>
+                                        <div className={"team"} key={team.id}>
+                                            <img src={team.crestUrl}/>
+                                            <span>
+                                                <a href={"/"}>{team.name}</a>
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+                        }
                     </div>
-                    <div>
-
+                    <div className={"matchesLeagueBlock"}>
+                        <span>Матчи турнира</span>
                     </div>
                 </div>
             </div>
