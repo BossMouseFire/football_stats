@@ -3,7 +3,12 @@ import './pageLeague.scss'
 import ball from './soccer-ball.svg'
 import {useDispatch} from "react-redux";
 import {useTypeSelector} from "../../hooks/useTypeSelector";
-import {changeMatchesActivePage, fetchMatches} from "../../store/actionCreators/matches";
+import {
+    changeMatchesActivePage,
+    fetchMatches,
+    fetchMatchesOfDate,
+    fetchMatchesOfSeason
+} from "../../store/actionCreators/matchesLeague";
 import {fetchTeams} from "../../store/actionCreators/teams";
 import {fetchLeague} from "../../store/actionCreators/league";
 import {fetchStandings} from "../../store/actionCreators/standings";
@@ -23,13 +28,16 @@ const PageLeague:React.FC = () => {
     const [end, setEnd] = useState<number>(matchesOnePage);
     const [pages, setPages] = useState<number[]>([]);
 
+    const [dataFrom, setDataFrom] = useState<string>("")
+    const [dataTo, setDataTo] = useState<string>("")
 
     const refButtonTeamList = useRef() as React.MutableRefObject<HTMLButtonElement>;
     const refButtonTeamTable = useRef() as React.MutableRefObject<HTMLButtonElement>;
-
+    const [flag, setFlag] = useState<boolean>(true)
     useEffect(() => {
         initialPages();
     }, [filterMatches])
+
     const initialPages = () => {
         const pageCount = Math.ceil(filterMatches.length / matchesOnePage);
         let array: number[] = [];
@@ -46,7 +54,6 @@ const PageLeague:React.FC = () => {
         setEnd(end);
     }
 
-
     useEffect(() => {
         const param:string | null = getParams("id");
         let id: number = Number(param)
@@ -54,11 +61,16 @@ const PageLeague:React.FC = () => {
         dispatch(fetchMatches(id))
         dispatch(fetchTeams(id))
         dispatch(fetchStandings(id))
+
     }, [dispatch])
 
     useEffect(() => {
-        console.log(standings)
-    }, [standings])
+        if (flag){
+            setDataFrom(`${matches[0]?.season.startDate}`)
+            setDataTo(`${matches[0]?.season.endDate}`)
+        }
+    }, [matches])
+
     const getParams = (key:string) : string | null => {
         const params:string = window.location.search.substring(1);
         const arrayParams: Array<string> = params.split("&");
@@ -74,6 +86,29 @@ const PageLeague:React.FC = () => {
         refButtonTeamList.current.classList.toggle("activeButton")
         setStandings(state)
     }
+
+    const changeSeasonMatches = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const param:string | null = getParams("id");
+        let id: number = Number(param)
+        const season = Number(e.target.value)
+        setFlag(true)
+        dispatch(fetchMatchesOfSeason(id, season))
+    }
+
+    const changeDateMatches = (e: React.ChangeEvent<HTMLInputElement>, flagDate: boolean) => {
+        const date = e.target.value
+        const param:string | null = getParams("id");
+        let id: number = Number(param)
+        setFlag(false)
+        if(flagDate){
+            setDataFrom(date)
+            dispatch(fetchMatchesOfDate(id, date, dataTo))
+        }else{
+            setDataTo(date)
+            dispatch(fetchMatchesOfDate(id, dataFrom, date))
+        }
+    }
+
     return(
         <div className={"league"}>
             <div className={"navbar"}>
@@ -115,7 +150,7 @@ const PageLeague:React.FC = () => {
                                         <div className={"team"} key={team.id}>
                                             <img src={team.crestUrl}/>
                                             <span>
-                                                <a href={"/"}>{team.name}</a>
+                                                <a href={`/team?id=${team.id}`}>{team.name}</a>
                                             </span>
                                         </div>
                                     )}
@@ -126,11 +161,26 @@ const PageLeague:React.FC = () => {
                         <div className={"titleBlock"}>Матчи турнира</div>
                         <div className={"filterOfMatches"}>
                             <span>C</span>
-                            <input type="date" name="calendar" className={"calendar"} value={"2021-09-02"}  max="2022-06-30" min="2018-06-30"/>
+                            <input
+                                type="date"
+                                name="calendar"
+                                className={"calendar"}
+                                value={dataFrom}
+                                max={`${matches[0]?.season.endDate}`}
+                                min={`${matches[0]?.season.startDate}`}
+                                onChange={(e) => changeDateMatches(e, true)}/>
                             <span>До</span>
-                            <input type="date" name="calendar" className={"calendar"} value={"2022-06-30"}  max="2022-06-30" min="2018-06-30"/>
+                            <input
+                                type="date"
+                                name="calendar"
+                                className={"calendar"}
+                                value={dataTo}
+                                max={`${matches[0]?.season.endDate}`}
+                                min={`${matches[0]?.season.startDate}`}
+                                onChange={(e) => changeDateMatches(e, false)}/>
                             <div className={"select"}>
-                                <select>
+                                <select onChange={(e) => changeSeasonMatches(e)}>
+                                    <option value={2021}>2021/2022</option>
                                     <option value={2020}>2020/2021</option>
                                     <option value={2019}>2019/2020</option>
                                     <option value={2018}>2018/2019</option>
@@ -145,11 +195,11 @@ const PageLeague:React.FC = () => {
                                     <span>
                                         {`${match.utcDate.split("T")[0].split("-")[2]}:${match.utcDate.split("T")[0].split("-")[1]}:${match.utcDate.split("T")[0].split("-")[0]}`}
                                     </span>
-                                    <span><a href={"/"}>{match.homeTeam.name}</a></span>
+                                    <span className={match.score.fullTime.homeTeam > match.score.fullTime.awayTeam ? "winnerTeam" : ""}><a href={`/team?id=${match.homeTeam.id}`}>{match.homeTeam.name}</a></span>
                                     <span>{match.status === "FINISHED" ? match.score.fullTime.homeTeam : "-"}</span>
                                     <span>:</span>
                                     <span>{match.status === "FINISHED" ? match.score.fullTime.awayTeam : "-"}</span>
-                                    <span><a href={"/"}>{match.awayTeam.name}</a></span>
+                                    <span className={match.score.fullTime.homeTeam < match.score.fullTime.awayTeam ? "winnerTeam" : ""}><a href={`/team?id=${match.awayTeam.id}`}>{match.awayTeam.name}</a></span>
                                 </div>
 
                             )}
@@ -162,7 +212,6 @@ const PageLeague:React.FC = () => {
                     </div>
                 </div>
             </div>
-            <div className={"endBar"}/>
         </div>
     )
 }

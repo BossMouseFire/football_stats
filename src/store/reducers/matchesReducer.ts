@@ -22,6 +22,10 @@ export const matchesReducer = (state = initialState, action:MatchesAction):Match
             return {matches: [], filterMatches: [], activePage: 0, loading: false, error: action.payload}
         case MatchesActionTypes.CHANGE_MATCHES_ACTIVE_PAGE:
             return {matches: state.matches, filterMatches: state.filterMatches, activePage: action.payload, loading: state.loading, error:state.error}
+        case MatchesActionTypes.FETCH_MATCHES_SEASON:
+            return {matches: action.payload, filterMatches: action.payload, activePage: 0, loading: false, error: null}
+        case MatchesActionTypes.FETCH_MATCHES_DATE:
+            return {matches: action.payload, filterMatches: action.payload, activePage: 0, loading: false, error: null}
         default:
             return state
     }

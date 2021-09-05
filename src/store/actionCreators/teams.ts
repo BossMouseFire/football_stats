@@ -11,7 +11,7 @@ export const fetchTeams = (id: number) => {
             })
             const data = {
                 headers: {
-                    "X-Auth-Token": "6991e1a69b0344a6915649c53b9f6f5b"
+                    "X-Auth-Token": "d12e597043234fd1ad211e2c9d6f731d"
                 }
             }
             const response = await axios.get(`https://api.football-data.org/v2/competitions/${id}/teams`, data)

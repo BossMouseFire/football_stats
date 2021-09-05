@@ -9,7 +9,7 @@ export const fetchLeague = (id: number) => {
         try {
             const data = {
                 headers: {
-                    "X-Auth-Token": "6991e1a69b0344a6915649c53b9f6f5b"
+                    "X-Auth-Token": "d12e597043234fd1ad211e2c9d6f731d"
                 }
             }
             dispatch({type: LeagueActionTypes.FETCH_LEAGUE})

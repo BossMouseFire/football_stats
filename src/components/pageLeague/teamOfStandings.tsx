@@ -14,8 +14,8 @@ const TeamOfStandings:React.FC<StandingsTeam> = ({team}) => {
                 <div>
                     <img src={team.team.crestUrl}/>
                     <span>
-                                                    <a href={"/"}>{team.team.name}</a>
-                                                </span>
+                        <a href={`/team?id=${team.team.id}`}>{team.team.name}</a>
+                    </span>
                 </div>
             </td>
             <td>{team.playedGames}</td>
