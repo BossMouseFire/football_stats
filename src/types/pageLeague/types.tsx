@@ -14,6 +14,7 @@ interface ISeason {
 export interface IMatch {
     id: number,
     status: string,
+    utcDate: string,
     score: {
         winner: string,
         fullTime: {
@@ -55,11 +56,13 @@ export interface TeamsState {
 
 export interface MatchesState {
     matches: IMatch[],
+    filterMatches: IMatch[],
+    activePage: number,
     loading: boolean,
     error: null | string
 }
 
-interface TeamTable {
+export interface TeamTable {
     position: number,
     team: {
         id: number,
@@ -103,7 +106,8 @@ export enum TeamsActionTypes {
 export enum MatchesActionTypes {
     FETCH_MATCHES = "FETCH_MATCHES",
     FETCH_MATCHES_SUCCESS = "FETCH_MATCHES_SUCCESS",
-    FETCH_MATCHES_ERROR = "FETCH_MATCHES_ERROR"
+    FETCH_MATCHES_ERROR = "FETCH_MATCHES_ERROR",
+    CHANGE_MATCHES_ACTIVE_PAGE = "CHANGE_MATCHES_ACTIVE_PAGE"
 }
 
 export enum StandingsActionTypes {
@@ -125,6 +129,8 @@ interface FetchStandingsActionError {
     type: StandingsActionTypes.FETCH_STANDINGS_ERROR,
     payload: string
 }
+
+
 
 
 interface FetchLeagueAction {
@@ -169,7 +175,13 @@ interface FetchMatchesActionError {
     payload: string
 }
 
+interface ChangeMatchesActivePage {
+    type: MatchesActionTypes.CHANGE_MATCHES_ACTIVE_PAGE,
+    payload: number
+}
+
+
 export type LeagueAction = FetchLeagueAction | FetchLeagueActionSuccess | FetchLeagueActionError
-export type MatchesAction = FetchMatchesAction | FetchMatchesActionSuccess | FetchMatchesActionError
+export type MatchesAction = FetchMatchesAction | FetchMatchesActionSuccess | FetchMatchesActionError | ChangeMatchesActivePage
 export type TeamsAction = FetchTeamsAction | FetchTeamsActionSuccess | FetchTeamsActionError
 export type StandingsAction = FetchStandingsAction | FetchStandingsActionSuccess | FetchStandingsActionError

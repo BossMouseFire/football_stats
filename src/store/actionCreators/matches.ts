@@ -28,3 +28,12 @@ export const fetchMatches = (id: number) => {
         }
     }
 }
+
+export const changeMatchesActivePage = (page: number) => {
+    return (dispatch: Dispatch<MatchesAction>) => {
+        dispatch({
+            type: MatchesActionTypes.CHANGE_MATCHES_ACTIVE_PAGE,
+            payload: page
+        })
+    }
+}

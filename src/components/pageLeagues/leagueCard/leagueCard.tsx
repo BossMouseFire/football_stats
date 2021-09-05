@@ -32,9 +32,9 @@ export const LeagueCard:React.FC<LeagueCardProps> =
                     {league.currentSeason.endDate.split("-")[0]}
                 </div>
                 <div>
-                    {league.currentSeason.startDate.replaceAll("-", ":")}
+                    {league.currentSeason.startDate.replaceAll("-", ".")}
                     -
-                    {league.currentSeason.endDate.replaceAll("-", ":")}
+                    {league.currentSeason.endDate.replaceAll("-", ".")}
                 </div>
             </div>
             <div className={"descriptionLeague"}>

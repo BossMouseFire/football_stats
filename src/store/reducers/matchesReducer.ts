@@ -6,6 +6,8 @@ import {
 
 const initialState:MatchesState = {
     matches: [],
+    filterMatches: [],
+    activePage: 0,
     loading: false,
     error: null
 }
@@ -13,11 +15,13 @@ const initialState:MatchesState = {
 export const matchesReducer = (state = initialState, action:MatchesAction):MatchesState => {
     switch (action.type){
         case MatchesActionTypes.FETCH_MATCHES:
-            return {matches: [], loading: true, error: null}
+            return {matches: [], filterMatches: [], activePage: 0, loading: true, error: null}
         case MatchesActionTypes.FETCH_MATCHES_SUCCESS:
-            return {matches: action.payload, loading: false, error: null}
+            return {matches: action.payload, filterMatches: action.payload, activePage: 0, loading: false, error: null}
         case MatchesActionTypes.FETCH_MATCHES_ERROR:
-            return {matches: [], loading: false, error: action.payload}
+            return {matches: [], filterMatches: [], activePage: 0, loading: false, error: action.payload}
+        case MatchesActionTypes.CHANGE_MATCHES_ACTIVE_PAGE:
+            return {matches: state.matches, filterMatches: state.filterMatches, activePage: action.payload, loading: state.loading, error:state.error}
         default:
             return state
     }
