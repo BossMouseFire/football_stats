@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 import './pageTeam.scss'
-import ball from "../pageLeague/soccer-ball.svg";
+import ball from "../otherComponents/soccer-ball.svg";
 import {useDispatch} from "react-redux";
 import {useTypeSelector} from "../../hooks/useTypeSelector";
 import {fetchTeam} from "../../store/actionCreators/team";
@@ -10,10 +10,13 @@ import {
     fetchMatchesTeamOfDate
 } from "../../store/actionCreators/matchesTeam";
 import MatchesTeamList from "./matchesTeamList";
+import Preloader from "../otherComponents/preloader";
+import Error from "../otherComponents/error";
+import Navbar from "../otherComponents/navBar";
 const PageTeam:React.FC = () => {
     const dispatch = useDispatch()
     const {team} = useTypeSelector(state => state.team)
-    const {matches, activePage} = useTypeSelector(state => state.matchesTeam)
+    const {matches, activePage, loading, error} = useTypeSelector(state => state.matchesTeam)
     const refButtonTeamListHome = useRef() as React.MutableRefObject<HTMLButtonElement>;
     const refButtonTeamListAway = useRef() as React.MutableRefObject<HTMLButtonElement>;
     const [dateFrom, setDateFrom] = useState<string>("")
@@ -30,13 +33,32 @@ const PageTeam:React.FC = () => {
         const param:string | null = getParams("id");
         let id: number = Number(param)
         dispatch(fetchTeam(id))
-        dispatch(fetchMatchesTeam(id, "HOME"))
+
+        const startDateTeam = localStorage.getItem("startDateTeam")
+        const endDateTeam = localStorage.getItem("endDateTeam")
+
+        console.log(matches[0]?.season.endDate)
+
+        if (startDateTeam && endDateTeam && startDateTeam !== "undefined" && endDateTeam !== "undefined"){
+            dispatch(fetchMatchesTeamOfDate(id, "HOME", startDateTeam, endDateTeam))
+        } else{
+            dispatch(fetchMatchesTeam(id, "HOME"))
+        }
     }, [])
 
     useEffect(() => {
         if (flag){
-            setDateFrom(`${matches[0]?.season.startDate}`)
-            setDateTo(`${matches[0]?.season.endDate}`)
+            const startDateTeam = localStorage.getItem("startDateTeam")
+            const endDateTeam = localStorage.getItem("endDateTeam")
+            if (startDateTeam && endDateTeam && startDateTeam !== "undefined" && endDateTeam !== "undefined"){
+                setDateFrom(startDateTeam)
+                setDateTo(endDateTeam)
+            } else{
+                localStorage.setItem("startDateTeam", `${matches[0]?.season.startDate}`)
+                localStorage.setItem("endDateTeam", `${matches[0]?.season.endDate}`)
+                setDateFrom(`${matches[0]?.season.startDate}`)
+                setDateTo(`${matches[0]?.season.endDate}`)
+            }
         }
     }, [matches])
 
@@ -89,19 +111,18 @@ const PageTeam:React.FC = () => {
         setFlag(false)
         if(flagDate){
             setDateFrom(date)
+            localStorage.setItem("startDateTeam", date)
             dispatch(fetchMatchesTeamOfDate(id, venue, date, dateTo))
         }else{
             setDateTo(date)
+            localStorage.setItem("endDateTeam", date)
             dispatch(fetchMatchesTeamOfDate(id, venue, dateFrom, date))
         }
     }
 
     return(
         <div className={"pageTeam"}>
-            <div className={"navbar"}>
-                <img src={ball}/>
-                <span>FootSTAT</span>
-            </div>
+            <Navbar/>
             <div className={"mainPart"}>
                 <div className={"descriptionTeam"}>
                     <img src={team.crestUrl}/>
@@ -123,7 +144,7 @@ const PageTeam:React.FC = () => {
                             name="calendar"
                             className={"calendar"}
                             value={dateFrom}
-                            max={`${matches[0]?.season.endDate}`}
+                            max={`2022-05-31`}
                             min={`2020-08-05`}
                             onChange={(e) => changeDateMatchesTeam(e, true)}/>
                         <span>До</span>
@@ -132,11 +153,11 @@ const PageTeam:React.FC = () => {
                             name="calendar"
                             className={"calendar"}
                             value={dateTo}
-                            max={`${matches[0]?.season.endDate}`}
+                            max={`2022-05-31`}
                             min={`2020-08-05`}
                             onChange={(e) => changeDateMatchesTeam(e, false)}/>
                     </div>
-                    <MatchesTeamList matches={matches} start={start} end={end}/>
+                    {loading ? <Preloader/> : error ? <Error/> : <MatchesTeamList matches={matches} start={start} end={end}/>}
                     <div className="pagination">
                         {pages.map(page =>
                             <a className={activePage === page - 1 ? "active" : ""} onClick={() => changePage( (page - 1) * matchesOnePage, page * matchesOnePage, page - 1)}>{page}</a>

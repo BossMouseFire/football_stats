@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import './pageLeague.scss'
-import ball from './soccer-ball.svg'
+import ball from '../otherComponents/soccer-ball.svg'
 import {useDispatch} from "react-redux";
 import {useTypeSelector} from "../../hooks/useTypeSelector";
 import {
@@ -13,14 +13,17 @@ import {fetchTeams} from "../../store/actionCreators/teams";
 import {fetchLeague} from "../../store/actionCreators/league";
 import {fetchStandings} from "../../store/actionCreators/standings";
 import TableStandings from "./tableStandings";
+import Navbar from "../otherComponents/navBar";
+import Preloader from "../otherComponents/preloader";
+import Error from "../otherComponents/error";
 const PageLeague:React.FC = () => {
 
     const dispatch = useDispatch()
 
     const {basicInfo} = useTypeSelector(state => state.league)
-    const {matches, filterMatches, activePage} = useTypeSelector(state => state.matches)
-    const {teams} = useTypeSelector(state => state.teams)
-    const {standings} = useTypeSelector(state => state.standings)
+    const {matches, activePage, loadingMatches, errorMatches} = useTypeSelector(state => state.matches)
+    const {teams, errorTeams, loadingTeams} = useTypeSelector(state => state.teams)
+    const {standings, loadingStandings, errorStandings} = useTypeSelector(state => state.standings)
     const [isStandings, setStandings] = useState<boolean>(true)
 
     const matchesOnePage = 30;
@@ -33,13 +36,15 @@ const PageLeague:React.FC = () => {
 
     const refButtonTeamList = useRef() as React.MutableRefObject<HTMLButtonElement>;
     const refButtonTeamTable = useRef() as React.MutableRefObject<HTMLButtonElement>;
-    const [flag, setFlag] = useState<boolean>(true)
+    const [flag, setFlag] = useState<number>(1)
+    const [seasonState, setSeasonState] = useState<number>(2021)
+
     useEffect(() => {
         initialPages();
-    }, [filterMatches])
+    }, [matches])
 
     const initialPages = () => {
-        const pageCount = Math.ceil(filterMatches.length / matchesOnePage);
+        const pageCount = Math.ceil(matches.length / matchesOnePage);
         let array: number[] = [];
         for(let i = 1; i <= pageCount; i++){
             array.push(i)
@@ -57,8 +62,16 @@ const PageLeague:React.FC = () => {
     useEffect(() => {
         const param:string | null = getParams("id");
         let id: number = Number(param)
+        const startDateLeague = localStorage.getItem("startDateLeague")
+        const endDateLeague = localStorage.getItem("endDateLeague")
+        if (startDateLeague && endDateLeague && startDateLeague !== "undefined" && endDateLeague !== "undefined"){
+            dispatch(fetchMatchesOfDate(id, startDateLeague, endDateLeague))
+        }
+        else{
+            dispatch(fetchMatches(id))
+        }
+
         dispatch(fetchLeague(id))
-        dispatch(fetchMatches(id))
         dispatch(fetchTeams(id))
         dispatch(fetchStandings(id))
 
@@ -66,8 +79,14 @@ const PageLeague:React.FC = () => {
 
     useEffect(() => {
         if (flag){
-            setDataFrom(`${matches[0]?.season.startDate}`)
-            setDataTo(`${matches[0]?.season.endDate}`)
+            if (matches[0]?.season.startDate !== undefined && matches[0]?.season.endDate !== undefined){
+                setDataFrom(`${matches[0]?.season.startDate}`)
+                setDataTo(`${matches[0]?.season.endDate}`)
+                // @ts-ignore
+                setSeasonState(matches[0]?.season.startDate.split("-")[0])
+                localStorage.setItem("startDateLeague", matches[0]?.season.startDate)
+                localStorage.setItem("endDateLeague", matches[0]?.season.endDate)
+            }
         }
     }, [matches])
 
@@ -91,7 +110,8 @@ const PageLeague:React.FC = () => {
         const param:string | null = getParams("id");
         let id: number = Number(param)
         const season = Number(e.target.value)
-        setFlag(true)
+        setFlag(1)
+        setSeasonState(season)
         dispatch(fetchMatchesOfSeason(id, season))
     }
 
@@ -99,22 +119,21 @@ const PageLeague:React.FC = () => {
         const date = e.target.value
         const param:string | null = getParams("id");
         let id: number = Number(param)
-        setFlag(false)
+        setFlag(0)
         if(flagDate){
             setDataFrom(date)
+            localStorage.setItem("startDateLeague", date)
             dispatch(fetchMatchesOfDate(id, date, dataTo))
         }else{
             setDataTo(date)
+            localStorage.setItem("endDateLeague", date)
             dispatch(fetchMatchesOfDate(id, dataFrom, date))
         }
     }
 
     return(
         <div className={"league"}>
-            <div className={"navbar"}>
-                <img src={ball}/>
-                <span>FootSTAT</span>
-            </div>
+            <Navbar/>
             <div className={"mainPart"}>
                 <div className={"descriptionLeague"}>
                     <div className={"leagueName"}>
@@ -143,8 +162,10 @@ const PageLeague:React.FC = () => {
                         </div>
                         {
                             isStandings ?
+                                loadingStandings ? <Preloader/> : errorStandings ? <Error/> :
                                 <TableStandings standings={standings}/>
                                 :
+                                loadingTeams ? <Preloader/> : errorTeams ? <Error/> :
                                 <div className={"allTeams"}>
                                     {teams.map(team =>
                                         <div className={"team"} key={team.id}>
@@ -179,31 +200,35 @@ const PageLeague:React.FC = () => {
                                 min={`${matches[0]?.season.startDate}`}
                                 onChange={(e) => changeDateMatches(e, false)}/>
                             <div className={"select"}>
-                                <select onChange={(e) => changeSeasonMatches(e)}>
+                                <select onChange={(e) => changeSeasonMatches(e)} value={seasonState}>
                                     <option value={2021}>2021/2022</option>
                                     <option value={2020}>2020/2021</option>
                                     <option value={2019}>2019/2020</option>
                                     <option value={2018}>2018/2019</option>
-                                    <option value={2017}>2017/2018</option>
                                 </select>
                             </div>
                         </div>
-                        <div className={"matchesLeagueList"}>
-                            {filterMatches.slice(start, end).map(match =>
+                        {loadingMatches ?
+                            <Preloader/> :
+                            errorMatches ?
+                                <Error/> :
+                            <div className={"matchesLeagueList"}>
+                                {matches.slice(start, end).map(match =>
 
-                                <div className={"match"} key={match.id}>
+                                    <div className={"match"} key={match.id}>
                                     <span>
                                         {`${match.utcDate.split("T")[0].split("-")[2]}:${match.utcDate.split("T")[0].split("-")[1]}:${match.utcDate.split("T")[0].split("-")[0]}`}
                                     </span>
-                                    <span className={match.score.fullTime.homeTeam > match.score.fullTime.awayTeam ? "winnerTeam" : ""}><a href={`/team?id=${match.homeTeam.id}`}>{match.homeTeam.name}</a></span>
-                                    <span>{match.status === "FINISHED" ? match.score.fullTime.homeTeam : "-"}</span>
-                                    <span>:</span>
-                                    <span>{match.status === "FINISHED" ? match.score.fullTime.awayTeam : "-"}</span>
-                                    <span className={match.score.fullTime.homeTeam < match.score.fullTime.awayTeam ? "winnerTeam" : ""}><a href={`/team?id=${match.awayTeam.id}`}>{match.awayTeam.name}</a></span>
-                                </div>
+                                        <span className={match.score.fullTime.homeTeam > match.score.fullTime.awayTeam ? "winnerTeam" : ""}><a href={`/team?id=${match.homeTeam.id}`}>{match.homeTeam.name}</a></span>
+                                        <span>{match.status === "FINISHED" ? match.score.fullTime.homeTeam : "-"}</span>
+                                        <span>:</span>
+                                        <span>{match.status === "FINISHED" ? match.score.fullTime.awayTeam : "-"}</span>
+                                        <span className={match.score.fullTime.homeTeam < match.score.fullTime.awayTeam ? "winnerTeam" : ""}><a href={`/team?id=${match.awayTeam.id}`}>{match.awayTeam.name}</a></span>
+                                    </div>
 
-                            )}
-                        </div>
+                                )}
+                            </div>
+                        }
                         <div className="pagination">
                             {pages.map(page =>
                                 <a className={activePage === page - 1 ? "active" : ""} onClick={() => changePage( (page - 1) * matchesOnePage, page * matchesOnePage, page - 1)}>{page}</a>

@@ -4,6 +4,8 @@ import LeagueCardList from "./leagueCardList";
 import {useTypeSelector} from "../../hooks/useTypeSelector";
 import {useDispatch} from "react-redux";
 import {fetchLeagues, filteringLeagues} from "../../store/actionCreators/leagues";
+import Preloader from "../otherComponents/preloader";
+import Error from "../otherComponents/error";
 const PageLeagues:React.FC = () => {
     const {loading, leagues, filterLeagues, error} = useTypeSelector(state => state.leagues)
     const dispatch = useDispatch()
@@ -44,7 +46,7 @@ const PageLeagues:React.FC = () => {
                     </div>
                     {
                         filterLeagues.length !== 0 ?
-                            <LeagueCardList leagues={filterLeagues}/>
+                            loading ? <Preloader/> : error ? <Error/> : <LeagueCardList leagues={filterLeagues}/>
                             :
                             <div className={"emptyListLeagues"}>
                                 По запросу ничего не найдено

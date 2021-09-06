@@ -10,7 +10,7 @@ export const fetchMatchesTeam = (id: number, venue: string) => {
             })
             const data = {
                 headers: {
-                    "X-Auth-Token": "d12e597043234fd1ad211e2c9d6f731d"
+                    "X-Auth-Token": process.env.REACT_APP_SECRET_KEY
                 }
             }
             const response = await axios.get(`https://api.football-data.org/v2/teams/${id}/matches?venue=${venue}`, data)
@@ -36,7 +36,7 @@ export const fetchMatchesTeamOfDate = (id: number, venue: string, dateFrom: stri
             })
             const data = {
                 headers: {
-                    "X-Auth-Token": "d12e597043234fd1ad211e2c9d6f731d"
+                    "X-Auth-Token": process.env.REACT_APP_SECRET_KEY
                 }
             }
             const response = await axios.get(

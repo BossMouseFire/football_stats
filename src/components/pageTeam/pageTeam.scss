@@ -1,24 +1,6 @@
 .pageTeam{
   display: flex;
   flex-direction: column;
-  .navbar{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: left;
-    background: #5A743F;
-    width: 100vw;
-    height: 6vw;
-    color: white;
-    img{
-      width: 2vw;
-      margin-left: 2vw;
-    }
-    span{
-      margin-left: 0.5vw;
-      font-size: 2.5vw;
-    }
-  }
   .mainPart{
     width: 70vw;
     margin: 3vw auto auto;
@@ -99,7 +81,6 @@
           }
         }
       }
-
       .filterOfMatches {
         display: flex;
         flex-direction: row;

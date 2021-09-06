@@ -1,6 +1,7 @@
 import React from 'react'
 import {IMatch} from "../../types/pageTeam/types";
 import MatchTeam from "./matchTeam";
+import "./pageTeam.scss"
 
 interface IMatchesTeamList {
     matches: IMatch[],
@@ -13,6 +14,7 @@ const MatchesTeamList:React.FC<IMatchesTeamList> = ({matches, start, end}) => {
             {matches.slice(start, end).map(match =>
                 <MatchTeam match={match}/>
             )}
+
         </div>
     )
 }

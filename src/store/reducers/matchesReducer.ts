@@ -6,26 +6,25 @@ import {
 
 const initialState:MatchesState = {
     matches: [],
-    filterMatches: [],
     activePage: 0,
-    loading: false,
-    error: null
+    loadingMatches: false,
+    errorMatches: null
 }
 
 export const matchesReducer = (state = initialState, action:MatchesAction):MatchesState => {
     switch (action.type){
         case MatchesActionTypes.FETCH_MATCHES:
-            return {matches: [], filterMatches: [], activePage: 0, loading: true, error: null}
+            return {matches: [], activePage: 0, loadingMatches: true, errorMatches: null}
         case MatchesActionTypes.FETCH_MATCHES_SUCCESS:
-            return {matches: action.payload, filterMatches: action.payload, activePage: 0, loading: false, error: null}
+            return {matches: action.payload, activePage: 0, loadingMatches: false, errorMatches: null}
         case MatchesActionTypes.FETCH_MATCHES_ERROR:
-            return {matches: [], filterMatches: [], activePage: 0, loading: false, error: action.payload}
+            return {matches: [], activePage: 0, loadingMatches: false, errorMatches: action.payload}
         case MatchesActionTypes.CHANGE_MATCHES_ACTIVE_PAGE:
-            return {matches: state.matches, filterMatches: state.filterMatches, activePage: action.payload, loading: state.loading, error:state.error}
+            return {matches: state.matches, activePage: action.payload, loadingMatches: state.loadingMatches, errorMatches:state.errorMatches}
         case MatchesActionTypes.FETCH_MATCHES_SEASON:
-            return {matches: action.payload, filterMatches: action.payload, activePage: 0, loading: false, error: null}
+            return {matches: action.payload, activePage: 0, loadingMatches: false, errorMatches: null}
         case MatchesActionTypes.FETCH_MATCHES_DATE:
-            return {matches: action.payload, filterMatches: action.payload, activePage: 0, loading: false, error: null}
+            return {matches: action.payload, activePage: 0, loadingMatches: false, errorMatches: null}
         default:
             return state
     }

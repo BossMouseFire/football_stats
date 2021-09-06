@@ -7,11 +7,12 @@ export const fetchLeagues = () => {
         try {
             const data = {
                 headers: {
-                    "X-Auth-Token": "d12e597043234fd1ad211e2c9d6f731d"
+                    "X-Auth-Token": process.env.REACT_APP_SECRET_KEY
                 }
             }
             dispatch({type: LeaguesActionTypes.FETCH_LEAGUES})
             const response = await axios.get<IRequestLeagues>("https://api.football-data.org/v2/competitions?plan=TIER_ONE", data)
+
             dispatch({
                 type: LeaguesActionTypes.FETCH_LEAGUES_SUCCESS,
                 payload: response.data.competitions

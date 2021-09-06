@@ -2,18 +2,18 @@ import {StandingsAction, StandingsActionTypes, StandingsState,} from "../../type
 
 const initialState:StandingsState = {
     standings: [],
-    loading: false,
-    error: null
+    loadingStandings: false,
+    errorStandings: null
 }
 
 export const standingsReducer = (state = initialState, action:StandingsAction):StandingsState => {
     switch (action.type){
         case StandingsActionTypes.FETCH_STANDINGS:
-            return {standings: [], loading: true, error: null}
+            return {standings: [], loadingStandings: true, errorStandings: null}
         case StandingsActionTypes.FETCH_STANDINGS_SUCCESS:
-            return {standings: action.payload, loading: false, error: null}
+            return {standings: action.payload, loadingStandings: false, errorStandings: null}
         case StandingsActionTypes.FETCH_STANDINGS_ERROR:
-            return {standings: [], loading: false, error: action.payload}
+            return {standings: [], loadingStandings: false, errorStandings: action.payload}
         default:
             return state
     }

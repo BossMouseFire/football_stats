@@ -6,18 +6,18 @@ import {
 
 const initialState:TeamsState = {
     teams: [],
-    loading: false,
-    error: null
+    loadingTeams: false,
+    errorTeams: null
 }
 
 export const teamsReducer = (state = initialState, action:TeamsAction):TeamsState => {
     switch (action.type){
         case TeamsActionTypes.FETCH_TEAMS:
-            return {teams: [], loading: true, error: null}
+            return {teams: [], loadingTeams: true, errorTeams: null}
         case TeamsActionTypes.FETCH_TEAMS_SUCCESS:
-            return {teams: action.payload, loading: false, error: null}
+            return {teams: action.payload, loadingTeams: false, errorTeams: null}
         case TeamsActionTypes.FETCH_TEAMS_ERROR:
-            return {teams: [], loading: false, error: action.payload}
+            return {teams: [], loadingTeams: false, errorTeams: action.payload}
         default:
             return state
     }

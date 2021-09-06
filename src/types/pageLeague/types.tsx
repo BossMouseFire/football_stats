@@ -55,16 +55,15 @@ export interface LeagueState {
 
 export interface TeamsState {
     teams: ITeam[],
-    loading: boolean,
-    error: null | string,
+    loadingTeams: boolean,
+    errorTeams: null | string,
 }
 
 export interface MatchesState {
     matches: IMatch[],
-    filterMatches: IMatch[],
     activePage: number,
-    loading: boolean,
-    error: null | string
+    loadingMatches: boolean,
+    errorMatches: null | string
 }
 
 export interface TeamTable {
@@ -92,8 +91,8 @@ export interface IRequestStandings {
 
 export interface StandingsState {
     standings: TeamTable[],
-    loading: boolean,
-    error: null | string
+    loadingStandings: boolean,
+    errorStandings: null | string
 }
 
 export enum LeagueActionTypes {
