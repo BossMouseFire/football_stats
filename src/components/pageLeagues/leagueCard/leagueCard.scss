@@ -1,0 +1,76 @@
+.leagueCard{
+  width: 30%;
+  height: 12vw;
+  background: #E0EBD1;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.5%;
+  font-size: 1vw;
+  margin-top: 2vw;
+  .titleLeague{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #5E7B3E;
+    div{
+      &:nth-child(1){
+        width: 20%;
+        margin-right: 8%;
+      }
+      &:nth-child(2){
+        font-size: 1.2vw;
+      }
+    }
+  }
+  .dateLeague{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 6%;
+    color: black;
+    div{
+      &:nth-child(1){
+        margin-right: 5%;
+      }
+      &:nth-child(2){
+        font-size: 0.95vw;
+        color: #302F2F;
+      }
+    }
+  }
+  .descriptionLeague{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 5%;
+    .stageCompetition{
+      display: flex;
+      flex-direction: column;
+      color: black;
+      div{
+        &:nth-child(1){
+          color: #302F2F;
+        }
+      }
+    }
+    .aboutCompetition{
+      background: #5E7B3E;
+      color: white;
+      padding: 4%;
+      border-radius: 20px;
+      font-size: 0.78vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.5s ease;
+      &:hover{
+        background: #425929;
+        transition: background 0.5s ease;
+      }
+    }
+  }
+
+}
