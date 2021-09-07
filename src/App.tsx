@@ -11,9 +11,9 @@ const App:React.FC = () => {
       <Provider store={store}>
           <BrowserRouter>
               <Switch>
-                  <Route exact path={"/"} component={PageLeagues}/>
-                  <Route path={"/league"} component={PageLeague}/>
-                  <Route path={"/team"} component={PageTeam}/>
+                  <Route exact path={"/football_stats"} component={PageLeagues}/>
+                  <Route path={"/football_stats/league"} component={PageLeague}/>
+                  <Route path={"/football_stats/team"} component={PageTeam}/>
                   <Redirect to={"/"}/>
               </Switch>
           </BrowserRouter>
