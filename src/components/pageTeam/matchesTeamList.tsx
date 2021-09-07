@@ -6,7 +6,7 @@ import "./pageTeam.scss"
 interface IMatchesTeamList {
     matches: IMatch[],
     start: number,
-    end: number
+    end: number,
 }
 const MatchesTeamList:React.FC<IMatchesTeamList> = ({matches, start, end}) => {
     return (

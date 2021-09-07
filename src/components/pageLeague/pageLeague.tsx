@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
 import './pageLeague.scss'
-import ball from '../otherComponents/soccer-ball.svg'
 import {useDispatch} from "react-redux";
 import {useTypeSelector} from "../../hooks/useTypeSelector";
 import {
@@ -16,6 +15,7 @@ import TableStandings from "./tableStandings";
 import Navbar from "../otherComponents/navBar";
 import Preloader from "../otherComponents/preloader";
 import Error from "../otherComponents/error";
+import {useHistory} from "react-router-dom";
 const PageLeague:React.FC = () => {
 
     const dispatch = useDispatch()
@@ -38,6 +38,7 @@ const PageLeague:React.FC = () => {
     const refButtonTeamTable = useRef() as React.MutableRefObject<HTMLButtonElement>;
     const [flag, setFlag] = useState<number>(1)
     const [seasonState, setSeasonState] = useState<number>(2021)
+    const history = useHistory()
 
     useEffect(() => {
         initialPages();
@@ -91,8 +92,7 @@ const PageLeague:React.FC = () => {
     }, [matches])
 
     const getParams = (key:string) : string | null => {
-        const params:string = window.location.search.substring(1);
-        console.log(window.location.search)
+        const params:string = window.location.hash.split("?")[1];
         const arrayParams: Array<string> = params.split("&");
         console.log(arrayParams)
         for (let param in arrayParams){
@@ -172,8 +172,8 @@ const PageLeague:React.FC = () => {
                                     {teams.map(team =>
                                         <div className={"team"} key={team.id}>
                                             <img src={team.crestUrl}/>
-                                            <span>
-                                                <a href={`/team?id=${team.id}`}>{team.name}</a>
+                                            <span onClick={() => history.push(`/team?id=${team.id}`)}>
+                                                {team.name}
                                             </span>
                                         </div>
                                     )}
@@ -221,11 +221,15 @@ const PageLeague:React.FC = () => {
                                     <span>
                                         {`${match.utcDate.split("T")[0].split("-")[2]}:${match.utcDate.split("T")[0].split("-")[1]}:${match.utcDate.split("T")[0].split("-")[0]}`}
                                     </span>
-                                        <span className={match.score.fullTime.homeTeam > match.score.fullTime.awayTeam ? "winnerTeam" : ""}><a href={`/team?id=${match.homeTeam.id}`}>{match.homeTeam.name}</a></span>
+                                        <span className={match.score.fullTime.homeTeam > match.score.fullTime.awayTeam ? "winnerTeam" : ""} onClick={() => history.push(`/team?id=${match.homeTeam.id}`)}>
+                                            {match.homeTeam.name}
+                                        </span>
                                         <span>{match.status === "FINISHED" ? match.score.fullTime.homeTeam : "-"}</span>
                                         <span>:</span>
                                         <span>{match.status === "FINISHED" ? match.score.fullTime.awayTeam : "-"}</span>
-                                        <span className={match.score.fullTime.homeTeam < match.score.fullTime.awayTeam ? "winnerTeam" : ""}><a href={`/team?id=${match.awayTeam.id}`}>{match.awayTeam.name}</a></span>
+                                        <span className={match.score.fullTime.homeTeam < match.score.fullTime.awayTeam ? "winnerTeam" : ""} onClick={() => history.push(`/team?id=${match.awayTeam.id}`)}>
+                                            {match.awayTeam.name}
+                                        </span>
                                     </div>
 
                                 )}

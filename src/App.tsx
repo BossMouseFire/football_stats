@@ -9,14 +9,12 @@ import {store} from "./store";
 const App:React.FC = () => {
   return(
       <Provider store={store}>
-          <HashRouter basename={process.env.PUBLIC_URL}>
-              <Switch>
-                  <Route exact path={"/"} component={PageLeagues}/>
-                  <Route path={"/league"} component={PageLeague}/>
-                  <Route path={"/team"} component={PageTeam}/>
-                  <Redirect to={"/"}/>
-              </Switch>
-          </HashRouter>
+          <Switch>
+              <Route exact path={"/"} component={PageLeagues}/>
+              <Route path={"/league"} component={PageLeague}/>
+              <Route path={"/team"} component={PageTeam}/>
+              <Redirect to={"/"}/>
+          </Switch>
       </Provider>
   )
 }

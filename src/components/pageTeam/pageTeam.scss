@@ -64,12 +64,12 @@
           width: 48%;
           font-size: 1.3vw;
           .winnerTeam{
-            a {
-              color: #458C24;
-            }
+            color: #458C24;
           }
           span{
             margin-left: 0.5vw;
+            transition: color 500ms ease;
+            cursor: pointer;
             &:nth-of-type(1){
               color: #565555;
               margin-left: 0;
@@ -77,6 +77,10 @@
             &:nth-of-type(3),
             &:nth-of-type(5) {
               font-weight: bold;
+            }
+            &:hover{
+              color: #1B5500 !important;
+              transition: color 500ms ease;
             }
           }
         }

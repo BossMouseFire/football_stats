@@ -6,6 +6,10 @@ import {useDispatch} from "react-redux";
 import {fetchLeagues, filteringLeagues} from "../../store/actionCreators/leagues";
 import Preloader from "../otherComponents/preloader";
 import Error from "../otherComponents/error";
+import LaLigaImg from './leaguesLogo/LaLiga.svg'
+import Liga1Img from './leaguesLogo/ligue1.svg'
+import PremierLeagueImg from './leaguesLogo/premier-league.svg'
+import SeriaAImg from './leaguesLogo/seriaA.svg'
 const PageLeagues:React.FC = () => {
     const {loading, leagues, filterLeagues, error} = useTypeSelector(state => state.leagues)
     const dispatch = useDispatch()
@@ -24,15 +28,15 @@ const PageLeagues:React.FC = () => {
                     FootSTAT – агрегатор футбольной статистики
                 </p>
                 <p>
-                    Актуальная информация о чемпионатах, командах и игроках.
+                    Актуальная информация о чемпионатах и командах
                 </p>
             </div>
             <div className={"blockChangeLeagues"} style={{marginBottom: "5%"}}>
                 <div className={"blockMainLeagues"}>
-                    <img src={"/images/leaguesLogo/LaLiga.svg"} alt={"ла-лига"}/>
-                    <img src={"/images/leaguesLogo/ligue1.svg"} alt={"лига 1"}/>
-                    <img src={"/images/leaguesLogo/premier-league.svg"} alt={"премьер лига"}/>
-                    <img src={"/images/leaguesLogo/seriaA.svg"} alt={"серия А"}/>
+                    <img src={LaLigaImg} alt={"ла-лига"}/>
+                    <img src={Liga1Img} alt={"лига 1"}/>
+                    <img src={PremierLeagueImg} alt={"премьер лига"}/>
+                    <img src={SeriaAImg} alt={"серия А"}/>
                 </div>
                 <div className={"blockLeagues"}>
                     <div className={"titleBlock"}>

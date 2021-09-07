@@ -23,7 +23,6 @@ const PageTeam:React.FC = () => {
     const [dateTo, setDateTo] = useState<string>("")
     const [flag, setFlag] = useState<boolean>(true)
     const [venue, setVenue] = useState<string>("")
-
     const matchesOnePage = 10;
     const [start, setStart] = useState<number>(0);
     const [end, setEnd] = useState<number>(matchesOnePage);
@@ -83,7 +82,7 @@ const PageTeam:React.FC = () => {
     }
 
     const getParams = (key:string) : string | null => {
-        const params:string = window.location.search.substring(1);
+        const params:string = window.location.hash.split("?")[1];
         const arrayParams: Array<string> = params.split("&");
         for (let param in arrayParams){
             const map: Array<string> = arrayParams[param].split("=");
