@@ -71,7 +71,7 @@ interface FetchMatchesTeamActionDate {
 
 interface FetchMatchesTeamActionError {
     type: MatchesTeamActionTypes.FETCH_MATCHES_TEAM_ERROR,
-    payload: string
+    payload: any
 }
 
 interface ChangeMatchesTeamActivePage {
@@ -83,14 +83,14 @@ interface ChangeMatchesTeamActivePage {
 export interface TeamState {
     team: ITeam,
     loading: boolean,
-    error: null | string,
+    error: null | any,
 }
 
 export interface MatchesTeamState {
     matches: IMatch[],
     activePage: number,
     loading: boolean,
-    error: null | string
+    error: null | any
 }
 
 
@@ -105,7 +105,7 @@ interface FetchTeamActionSuccess {
 
 interface FetchTeamActionError {
     type: TeamActionTypes.FETCH_TEAM_ERROR,
-    payload: string
+    payload: any
 }
 
 export type TeamAction = FetchTeamAction | FetchTeamActionSuccess | FetchTeamActionError

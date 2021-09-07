@@ -50,20 +50,20 @@ export interface ITeam {
 export interface LeagueState {
     basicInfo: ILeague,
     loading: boolean,
-    error: null | string,
+    error: null | any,
 }
 
 export interface TeamsState {
     teams: ITeam[],
     loadingTeams: boolean,
-    errorTeams: null | string,
+    errorTeams: null | any,
 }
 
 export interface MatchesState {
     matches: IMatch[],
     activePage: number,
     loadingMatches: boolean,
-    errorMatches: null | string
+    errorMatches: null | any
 }
 
 export interface TeamTable {
@@ -92,7 +92,7 @@ export interface IRequestStandings {
 export interface StandingsState {
     standings: TeamTable[],
     loadingStandings: boolean,
-    errorStandings: null | string
+    errorStandings: null | any
 }
 
 export enum LeagueActionTypes {
@@ -133,7 +133,7 @@ interface FetchStandingsActionSuccess {
 
 interface FetchStandingsActionError {
     type: StandingsActionTypes.FETCH_STANDINGS_ERROR,
-    payload: string
+    payload: any
 }
 
 interface FetchLeagueAction {
@@ -147,7 +147,7 @@ interface FetchLeagueActionSuccess {
 
 interface FetchLeagueActionError {
     type: LeagueActionTypes.FETCH_LEAGUE_ERROR,
-    payload: string
+    payload: any
 }
 
 interface FetchTeamsAction {
@@ -161,7 +161,7 @@ interface FetchTeamsActionSuccess {
 
 interface FetchTeamsActionError {
     type: TeamsActionTypes.FETCH_TEAMS_ERROR,
-    payload: string
+    payload: any
 }
 
 interface FetchMatchesAction {
@@ -185,7 +185,7 @@ interface FetchMatchesActionDate {
 
 interface FetchMatchesActionError {
     type: MatchesActionTypes.FETCH_MATCHES_ERROR,
-    payload: string
+    payload: any
 }
 
 interface ChangeMatchesActivePage {

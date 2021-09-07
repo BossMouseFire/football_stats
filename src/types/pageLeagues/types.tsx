@@ -21,7 +21,7 @@ export interface LeaguesState {
     leagues: ILeagueCard[],
     filterLeagues: ILeagueCard[],
     loading: boolean,
-    error: null | string
+    error: null | any
 }
 export enum LeaguesActionTypes {
     FETCH_LEAGUES = "FETCH_LEAGUES",
@@ -40,7 +40,7 @@ interface FetchLeaguesActionSuccess {
 
 interface FetchLeaguesActionError {
     type: LeaguesActionTypes.FETCH_LEAGUES_ERROR;
-    payload: string
+    payload: any
 }
 
 interface FilterLeagues {
