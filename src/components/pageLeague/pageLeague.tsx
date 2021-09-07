@@ -92,7 +92,9 @@ const PageLeague:React.FC = () => {
 
     const getParams = (key:string) : string | null => {
         const params:string = window.location.search.substring(1);
+        console.log(window.location.search)
         const arrayParams: Array<string> = params.split("&");
+        console.log(arrayParams)
         for (let param in arrayParams){
             const map: Array<string> = arrayParams[param].split("=");
             if(map[0] === key) return map[1];
