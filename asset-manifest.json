@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/football_stats/static/css/main.b5d6fd7e.chunk.css",
+    "main.js": "/football_stats/static/js/main.9c31b732.chunk.js",
+    "main.js.map": "/football_stats/static/js/main.9c31b732.chunk.js.map",
+    "runtime-main.js": "/football_stats/static/js/runtime-main.84e7c0c3.js",
+    "runtime-main.js.map": "/football_stats/static/js/runtime-main.84e7c0c3.js.map",
+    "static/js/2.db38d775.chunk.js": "/football_stats/static/js/2.db38d775.chunk.js",
+    "static/js/2.db38d775.chunk.js.map": "/football_stats/static/js/2.db38d775.chunk.js.map",
+    "static/js/3.d5fae6dc.chunk.js": "/football_stats/static/js/3.d5fae6dc.chunk.js",
+    "static/js/3.d5fae6dc.chunk.js.map": "/football_stats/static/js/3.d5fae6dc.chunk.js.map",
+    "index.html": "/football_stats/index.html",
+    "static/css/main.b5d6fd7e.chunk.css.map": "/football_stats/static/css/main.b5d6fd7e.chunk.css.map",
+    "static/js/2.db38d775.chunk.js.LICENSE.txt": "/football_stats/static/js/2.db38d775.chunk.js.LICENSE.txt",
+    "static/media/LaLiga.ac98ef87.svg": "/football_stats/static/media/LaLiga.ac98ef87.svg",
+    "static/media/pageLeagues.scss": "/football_stats/static/media/backgroundFirstPage.e79e78ec.png",
+    "static/media/ligue1.6c6c309e.svg": "/football_stats/static/media/ligue1.6c6c309e.svg",
+    "static/media/premier-league.6c5e15ca.svg": "/football_stats/static/media/premier-league.6c5e15ca.svg",
+    "static/media/seriaA.696c8885.svg": "/football_stats/static/media/seriaA.696c8885.svg",
+    "static/media/soccer-ball.d603992e.svg": "/football_stats/static/media/soccer-ball.d603992e.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.84e7c0c3.js",
+    "static/js/2.db38d775.chunk.js",
+    "static/css/main.b5d6fd7e.chunk.css",
+    "static/js/main.9c31b732.chunk.js"
+  ]
+}
